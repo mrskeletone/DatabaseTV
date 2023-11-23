@@ -14,10 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -94,21 +91,25 @@ public class FinishProductController {
     public String finisProductAdd(Model model){
         List<Materials> materials=materialsRepository.findAll();
         model.addAttribute("materials",materials);
+        model.addAttribute("warehouse",warehouseRepository.findAll());
+        model.addAttribute("man",manufactureRepository.findAll());
         return "product-add";
     }
     @PostMapping("/finishProduct/add")
     public String finishProductAddPost(Model model, @RequestParam Optional<Integer> id,@RequestParam String nameProduct,
-                                       @RequestParam Optional<Integer> manufacture,@RequestParam Optional<Integer>warehouse ,
+                                       @RequestParam("man") String manufacture,@RequestParam String warehouse ,
                                        @RequestParam Optional<Integer>quantity , @RequestParam LocalDate date,
-                                       @RequestParam("materials")Materials[] materials){
-        Manufacture manufactureById=manufactureRepository.findById(manufacture.get()).get();
-        TV_warehouse warehouseById=warehouseRepository.findById(warehouse.get()).get();
-        FinishedProduct finishedProduct=new FinishedProduct(id.get(),quantity.get(),nameProduct,date,manufactureById,warehouseById);
+                                       @RequestParam("materials")String[] materials){
+
+        Manufacture manufactureById=manufactureRepository.findById(Integer.parseInt(manufacture)).orElseThrow();
+        TV_warehouse warehouseById=warehouseRepository.findById(Integer.parseInt(warehouse)).orElseThrow();
+        FinishedProduct finishedProduct=new FinishedProduct(id.orElseThrow(),quantity.orElseThrow(),nameProduct,date,manufactureById,warehouseById);
         service.save(finishedProduct);
-        for (Materials material : materials) {
-            GroupMaterials groupMaterials = new GroupMaterials(finishedProduct, material);
-            groupMaterialsRepository.save(groupMaterials);
-        }
+        FinishedProduct finishedProduct1=finishProductRepository.findById(id.orElseThrow()).orElseThrow();
+        insertGroupMat(materials, finishedProduct1);
+        if(warehouseById.getLast_receipt_date().isBefore(date)){
+        warehouseById.setLast_receipt_date(date);
+        warehouseRepository.save(warehouseById);}
         return "redirect:/finishProduct";
     }
     @GetMapping("/finishProduct/{id}")
@@ -122,7 +123,57 @@ public class FinishProductController {
     @PostMapping("/finishProduct/{id}/remove")
     public String removeProduct(Model model,@PathVariable int id){
         FinishedProduct finishedProduct=finishProductRepository.findById(id).orElseThrow();
+        int i=finishedProduct.getTv_warehouse().getId();
         finishProductRepository.delete(finishedProduct);
+        TV_warehouse warehouse=warehouseRepository.findById(i).orElseThrow();
+        warehouse.setLast_receipt_date(finishProductRepository.findMaxDate(i));
+        warehouseRepository.save(warehouse);
         return "redirect:/finishProduct";
+    }
+   @GetMapping("/finishProduct/{id}/change")
+   public String changeProduct(Model model,@PathVariable int id){
+        if(!finishProductRepository.existsById(id)){
+            return "redirect:finishProduct";
+        }
+        Optional<FinishedProduct> optional=finishProductRepository.findById(id);
+        List<FinishedProduct> list=new ArrayList<>();
+        optional.ifPresent(list::add);
+        model.addAttribute("product",list);
+        model.addAttribute("man",manufactureRepository.findAll());
+       List<Materials> materials=materialsRepository.findAll();
+       model.addAttribute("materials",materials);
+        return "product-change";
+   }
+   @PostMapping("/finishProduct/{id}/change")
+    public String changePost(Model model,@PathVariable int id,@RequestParam String nameProduct,@RequestParam String man,
+   @RequestParam LocalDate data,@RequestParam String[] materials ){
+        FinishedProduct finishedProduct=finishProductRepository.findById(id).orElseThrow();
+        if(!finishedProduct.getNameProduct().equals(nameProduct)&& !nameProduct.isEmpty()){
+            finishedProduct.setNameProduct(nameProduct);
+        }
+        Manufacture manufacture=manufactureRepository.findById(Integer.parseInt(man)).orElseThrow();
+        if(finishedProduct.getManufacture()!=manufacture){
+            finishedProduct.setManufacture(manufacture);
+        }
+        if(finishedProduct.getDateCreation()!=data){
+            finishedProduct.setDateCreation(data);
+        }
+       List<GroupMaterials> groupMaterials=groupMaterialsRepository.findByFinishedProduct(finishedProduct);
+        groupMaterialsRepository.deleteAll(groupMaterials);
+       insertGroupMat(materials, finishedProduct);
+       finishProductRepository.save(finishedProduct);
+        return "redirect:/finishProduct";
+   }
+
+    private void insertGroupMat(@RequestParam String[] materials, FinishedProduct finishedProduct) {
+        List<Materials> materialsList=new ArrayList<>();
+        for (var s :
+                materials) {
+            materialsList.add(materialsRepository.findById(Integer.parseInt(s)).orElseThrow());
+        }
+        for (Materials material : materialsList) {
+            GroupMaterials groupMaterialsNew = new GroupMaterials(finishedProduct, material);
+            groupMaterialsRepository.save(groupMaterialsNew);
+        }
     }
 }

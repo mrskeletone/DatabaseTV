@@ -17,14 +17,22 @@
     <form id="add" action="/finishProduct/add" method="post">
         <input type="number" name="id"  placeholder="Номер продукта"  class="form-control" ><br>
         <input type="text" name="nameProduct"   placeholder="Имя продукта"  class="form-control"><br>
-        <input type="number" name="manufacture"   placeholder="№ Мануфактура"  class="form-control"><br>
-        <input type="number" name="warehouse"   placeholder="№ склада"  class="form-control"><br>
+<!--        <input type="number" name="manufacture"   placeholder="№ Мануфактура"  class="form-control"><br>-->
+        <select name="man" id="man" class="form-control selectpicker"   >
+            <option disabled>select option</option>
+            <option th:each="el:${man}" th:value="${el.id_Manufucture}" th:text="${el.id_Manufucture}"></option>
+        </select><br>
+<!--        <input type="number" name="warehouse"   placeholder="№ склада"  class="form-control"><br>-->
+        <select name="warehouse" id="warehouse" class="form-control selectpicker"   >
+            <option disabled>select option</option>
+            <option th:each="el:${warehouse}" th:value="${el.id}" th:text="${el.storekeeper.getName()}"></option>
+        </select><br>
         <input type="number" name="quantity"   placeholder="колическтво"  class="form-control"><br>
         <input type="date" name="date"   placeholder="дата производства"  class="form-control"><br>
         <select name="materials" id="materials" class="form-control selectpicker" multiple  >
                 <option disabled>select option</option>
-                <option th:each="el:${materials}" th:value="${el}" th:text="${el.name}"></option>
-        </select>
+                <option th:each="el:${materials}" th:value="${el.id}" th:text="${el.name}"></option>
+        </select><br>
 
         <button type="submit" class="btn btn-success"  >Добавить продукт</button>
     </form>

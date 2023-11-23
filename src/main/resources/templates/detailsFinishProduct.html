@@ -34,6 +34,7 @@
             <span  th:text="${el1.materials.name}" class="h4"/>
             <p></p>
         </div>
+        <a th:href="'/finishProduct/'+${el.id}+'/change'" class="btn btn-warning">Изменить</a>
         <form th:action="'/finishProduct/'+${el.id}+'/remove'" method="post">
             <button class="btn btn-warning" type="submit">Удалить</button>
         </form>

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface FinishProductRepository extends JpaRepository<FinishedProduct,Integer> {
@@ -41,4 +42,6 @@ public interface FinishProductRepository extends JpaRepository<FinishedProduct,I
             " ON f.Id_Fiinished_product = g.Id_Fiinished_product\n" +
             " WHERE m.Id_suppliers=:id")
     List<FinishedProduct> findAllBySup(@Param("id")int id);
+    @Query(nativeQuery = true,value = "SELECT MAX(f.Date_Creation) FROM finishedproduct f WHERE f.Id_warehouse=:warehouse")
+    LocalDate findMaxDate(@Param("warehouse")int warehouse);
 }
