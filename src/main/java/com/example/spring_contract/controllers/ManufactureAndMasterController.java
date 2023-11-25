@@ -4,6 +4,7 @@ import com.example.spring_contract.model.Manufacture;
 import com.example.spring_contract.model.Master;
 import com.example.spring_contract.repository.ManufactureRepository;
 import com.example.spring_contract.repository.MasterRepository;
+import com.example.spring_contract.service.ManufactureAndMasterService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -22,11 +24,14 @@ public class ManufactureAndMasterController {
     private ManufactureRepository manufactureRepository;
     @NonNull
     private MasterRepository masterRepository;
+    @NonNull
+    private ManufactureAndMasterService service;
 
     @GetMapping("/manufacture")
-    public String manufacture(Model model){
-        model.addAttribute("man",manufactureRepository.findAll());
-        return "manufacture";
+    public String manufacture(Model model,String id){
+        List<Manufacture> list=service.findByIdOrMasterOrProduct(id);
+        model.addAttribute("man",list);
+        return "product/manufacture";
     }
     @PostMapping("/manufacture/{id}/remove")
     public String deleteManufacture(Model model,@PathVariable int id){
@@ -42,7 +47,7 @@ public class ManufactureAndMasterController {
     public String postAddManufacture(Model model, @RequestParam Optional<Integer> idMan,@RequestParam Master master ){
         Manufacture manufacture=new Manufacture(idMan.orElseThrow(),master);
         //переделать с сервисом
-        manufactureRepository.save(manufacture);
+        service.saveManufacture(manufacture);
         return "redirect:/manufacture";
     }
     @GetMapping("/manufacture/master")
@@ -66,7 +71,7 @@ public class ManufactureAndMasterController {
                                 @RequestParam Optional<Integer> salary ,@RequestParam String special){
         Master master=new Master(id.orElseThrow(),name,salary.orElseThrow(),special);
         //Переделать с сервисом
-        masterRepository.save(master);
+        service.saveMaster(master);
         return "redirect:/manufacture/master";
     }
 }

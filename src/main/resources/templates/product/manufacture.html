@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org" >
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="ISO-8859-1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
@@ -15,34 +15,34 @@
 
 
 <div class="container mt-5">
-    <h1>Работники склада</h1>
-<!--    Доделать-->
-    <form th:action="@{/storekeeper}" method="get">
-        <input type="text" name="id" th:value="${id}"  placeholder="Поиск по id или имени" size="20" >
-        <input type="number" name="begin" th:value="${begin}"  placeholder="Зарплата от" size="20" >
-        <input type="number" name="end" th:value="${end}"  placeholder="Зарплата до" size="20" >
+    <h1>Цехи</h1>
+    <!--    Доделать-->
+    <form th:action="@{/manufacture}" method="get">
+        <input type="text" name="id" th:value="${id}"  placeholder="Поиск по №,продукции или имени мастера цеха" size="45" >
         <button type="submit" class="btn btn-info"  >Search</button>
         <button type="submit" class="btn btn-info" >Reset</button>
     </form>
-    <div th:each="el :${storekeeper}" class="alert alert-info mt-2">
+    <div th:each="el :${man}" class="alert alert-info mt-2">
         <span class="h1">№</span>
-        <span class="h1" th:text="${el.id}" th:name="id"/>
+        <span class="h1" th:text="${el.id_Manufucture}" th:name="id"/>
         <p></p>
-        <span class="h4">Имя работника склада:</span>
-        <span  th:text="${el.name}" class="h4"/>
+        <span class="h4">Имя Мастера Цеха:</span>
+        <span  th:text="${el.master.name}" class="h4"/>
         <p></p>
-        <span class="h4">Зарплата работника склада:</span>
-        <span th:text="${el.salary}" class="h4"/>
-        <p></p>
-        <form th:action="'/storekeeper/'+${el.id}+'/remove'" method="post">
+        <p class="h4">Продукты производимые на складе:</p>
+        <div th:each="el1:${el.finishedProducts}" >
+            <span class="h4" th:text="${el1.nameProduct}"></span>
+            <p/>
+        </div>
+        <form th:action="'/manufacture/'+${el.id_Manufucture}+'/remove'" method="post">
             <button class="btn btn-warning" type="submit">Удалить</button>
         </form>
-<!--        <a th:href="'/finishProduct/'+ ${el.id}" class="btn btn-warning">Детальнее</a>-->
+        <!--        <a th:href="'/finishProduct/'+ ${el.id}" class="btn btn-warning">Детальнее</a>-->
     </div>
-    <a th:href="'/warehouse/add/storekeeper'" class="btn btn-warning">Добавить нового работника склада</a>
-    <p></p>
+    <a th:href="'/manufacture/add'" class="btn btn-warning">Добавить новый цех</a>
+    <a href="/manufacture/master" class="btn btn-warning">Работники цехов</a>
 </div>
-<a href="/warehouse" class="btn btn-primary w-100 py-2">Назад</a>
+<a href="/finishProduct" class="btn btn-primary w-100 py-2">Назад</a>
 
 <footer th:insert="blocks/footer :: footer"></footer>
 

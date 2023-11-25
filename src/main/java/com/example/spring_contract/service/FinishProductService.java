@@ -2,15 +2,17 @@ package com.example.spring_contract.service;
 
 import com.example.spring_contract.repository.FinishProductRepository;
 import com.example.spring_contract.model.FinishedProduct;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class FinishProductService {
-    @Autowired
+    @NonNull
     private FinishProductRepository repository;
 
     public List<FinishedProduct> getAllProduct() {
@@ -30,11 +32,8 @@ public class FinishProductService {
     }
 
     public List<FinishedProduct> getByMan(int man) {
-        //try {
         return repository.findByMan(man);
-//        } catch (Exception e) {
-//            return  repository.findAll();
-//        }
+
 
     }
 

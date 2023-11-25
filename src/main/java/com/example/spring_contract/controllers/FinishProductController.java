@@ -22,7 +22,7 @@ public class FinishProductController {
     @NonNull
     private FinishProductRepository finishProductRepository;
 
-    @Autowired
+    @NonNull
     private FinishProductService service;
 
     @NonNull
@@ -33,6 +33,8 @@ public class FinishProductController {
     private WarehouseRepository warehouseRepository;
     @NonNull
     private GroupMaterialsRepository groupMaterialsRepository;
+
+    private final String main="redirect:/finishProduct";
 
 
     @GetMapping("/finishProduct")
@@ -61,7 +63,6 @@ public class FinishProductController {
 
         List<FinishedProduct> time = service.getByDate(begin, end);
         boolean flag = false;
-        int size = list.size();
         if (!time.isEmpty()) {
             for (int i = 0; i < list.size(); i++) {
                 flag = false;
@@ -84,7 +85,7 @@ public class FinishProductController {
 
         model.addAttribute("finishProduct", list);
 
-        return "finishProduct";
+        return "product/finishProduct";
     }
 
     @GetMapping("/finishProduct/add")
@@ -93,7 +94,7 @@ public class FinishProductController {
         model.addAttribute("materials",materials);
         model.addAttribute("warehouse",warehouseRepository.findAll());
         model.addAttribute("man",manufactureRepository.findAll());
-        return "product-add";
+        return "product/product-add";
     }
     @PostMapping("/finishProduct/add")
     public String finishProductAddPost(Model model, @RequestParam Optional<Integer> id,@RequestParam String nameProduct,
@@ -113,7 +114,7 @@ public class FinishProductController {
         if(warehouseById.getLast_receipt_date()==null||warehouseById.getLast_receipt_date().isBefore(date)){
         warehouseById.setLast_receipt_date(date);
         warehouseRepository.save(warehouseById);}
-        return "redirect:/finishProduct";
+        return main;
     }
     @GetMapping("/finishProduct/{id}")
     public String finishProductId(Model model, @PathVariable int id) {
@@ -121,7 +122,7 @@ public class FinishProductController {
         ArrayList<FinishedProduct> finishedProducts = new ArrayList<>();
         finishedProduct.ifPresent(finishedProducts::add);
         model.addAttribute("finishProduct", finishedProducts);
-        return "detailsFinishProduct";
+        return "product/detailsFinishProduct";
     }
     @PostMapping("/finishProduct/{id}/remove")
     public String removeProduct(Model model,@PathVariable int id){
@@ -131,12 +132,12 @@ public class FinishProductController {
         TV_warehouse warehouse=warehouseRepository.findById(i).orElseThrow();
         warehouse.setLast_receipt_date(finishProductRepository.findMaxDate(i));
         warehouseRepository.save(warehouse);
-        return "redirect:/finishProduct";
+        return main;
     }
    @GetMapping("/finishProduct/{id}/change")
    public String changeProduct(Model model,@PathVariable int id){
         if(!finishProductRepository.existsById(id)){
-            return "redirect:finishProduct";
+            return main;
         }
         Optional<FinishedProduct> optional=finishProductRepository.findById(id);
         List<FinishedProduct> list=new ArrayList<>();
@@ -146,7 +147,7 @@ public class FinishProductController {
         model.addAttribute("war",warehouseRepository.findAll());
        List<Materials> materials=materialsRepository.findAll();
        model.addAttribute("materials",materials);
-        return "product-change";
+        return "product/product-change";
    }
    @PostMapping("/finishProduct/{id}/change")
     public String changePost(Model model,@PathVariable int id,@RequestParam String nameProduct,@RequestParam Optional<Integer> man,
@@ -163,15 +164,15 @@ public class FinishProductController {
             finishedProduct.setDateCreation(data);
         }
         if(finishedProduct.getTv_warehouse().getId()!=warehouse.orElseThrow()){
-            TV_warehouse tv_warehouse=warehouseRepository.findById(warehouse.orElseThrow()).orElseThrow();
-            finishedProduct.setTv_warehouse(tv_warehouse);
+            TV_warehouse tvWarehouse=warehouseRepository.findById(warehouse.orElseThrow()).orElseThrow();
+            finishedProduct.setTv_warehouse(tvWarehouse);
         }
         if(materials!=null){
        List<GroupMaterials> groupMaterials=groupMaterialsRepository.findByFinishedProduct(finishedProduct);
         groupMaterialsRepository.deleteAll(groupMaterials);
        insertGroupMat(materials, finishedProduct);}
        finishProductRepository.save(finishedProduct);
-        return "redirect:/finishProduct";
+        return main;
    }
 
     private void insertGroupMat( String[] materials, FinishedProduct finishedProduct) {
