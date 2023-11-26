@@ -29,7 +29,7 @@
         <span class="h4">Имя Мастера Цеха:</span>
         <span  th:text="${el.master.name}" class="h4"/>
         <p></p>
-        <p class="h4">Продукты производимые на складе:</p>
+        <p class="h4">Продукты производимые на цехе:</p>
         <div th:each="el1:${el.finishedProducts}" >
             <span class="h4" th:text="${el1.nameProduct}"></span>
             <p/>

@@ -23,9 +23,9 @@ public class WarehouseControllers {
     @NonNull
     private WarehouseRepository warehouseRepository;
 
-    @Autowired
+    @NonNull
     private WarehouseService service;
-    @Autowired
+    @NonNull
     private StorekeeperRepository storekeeperRepository;
 
     //    @GetMapping("/warehouse")
@@ -59,7 +59,7 @@ public class WarehouseControllers {
 
     @PostMapping("/warehouse/{id}/remove")
     public String removeProduct(Model model, @PathVariable int id) {
-        TV_warehouse warehouse = warehouseRepository.findById(id).get();
+        TV_warehouse warehouse = warehouseRepository.findById(id).orElseThrow();
         warehouseRepository.delete(warehouse);
         return "redirect:/warehouse";
     }
@@ -79,9 +79,9 @@ public class WarehouseControllers {
     @PostMapping("/warehouse/{id}/change")
     public String warehouseChangePost(Model model, @PathVariable int id, @RequestParam Storekeeper storekeeper) {
         Optional<TV_warehouse> warehouse = warehouseRepository.findById(id);
-        TV_warehouse tv_warehouse = warehouse.orElseThrow();
-        tv_warehouse.setStorekeeper(storekeeper);
-        warehouseRepository.save(tv_warehouse);
+        TV_warehouse tvWarehouse = warehouse.orElseThrow();
+        tvWarehouse.setStorekeeper(storekeeper);
+        warehouseRepository.save(tvWarehouse);
         return "redirect:/warehouse";
     }
 

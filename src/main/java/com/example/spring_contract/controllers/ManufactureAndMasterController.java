@@ -26,7 +26,7 @@ public class ManufactureAndMasterController {
     private MasterRepository masterRepository;
     @NonNull
     private ManufactureAndMasterService service;
-
+    //manufacture
     @GetMapping("/manufacture")
     public String manufacture(Model model,String id){
         List<Manufacture> list=service.findByIdOrMasterOrProduct(id);
@@ -40,20 +40,27 @@ public class ManufactureAndMasterController {
         return "redirect:/manufacture";
     }
     @GetMapping("/manufacture/add")
-    public String addManufacture(Model model){
-        return "addManufacture";
+    public String addManufacture(Model model) {
+        model.addAttribute("mas",masterRepository.findMasterWithoutManufacture());
+        return "product/addManufacture";
     }
     @PostMapping("/manufacture/add")
     public String postAddManufacture(Model model, @RequestParam Optional<Integer> idMan,@RequestParam Master master ){
         Manufacture manufacture=new Manufacture(idMan.orElseThrow(),master);
-        //переделать с сервисом
         service.saveManufacture(manufacture);
         return "redirect:/manufacture";
     }
+
+
+    //master
+
+
     @GetMapping("/manufacture/master")
-    public String master(Model model){
-        model.addAttribute("mas",masterRepository.findAll());
-        return "master";
+    public String master(Model model,String id,Optional<Integer> begin,Optional<Integer> end){
+        List<Master> list=service.findByIdOrMaster(id);
+        list=service.findBySalary(begin,end,list);
+        model.addAttribute("mas",list);
+        return "product/master";
     }
     @PostMapping("/manufacture/master/{id}/remove")
     public String deleteMaster(Model model,@PathVariable int id){
@@ -64,13 +71,12 @@ public class ManufactureAndMasterController {
     @GetMapping("/manufacture/master/add" )
     public String addMaster(Model model){
 
-        return "addMaster";
+        return "product/addMaster";
     }
     @PostMapping("/manufacture/master/add")
     public String postAddMaster(Model model,@RequestParam Optional<Integer> id,@RequestParam String name,
                                 @RequestParam Optional<Integer> salary ,@RequestParam String special){
         Master master=new Master(id.orElseThrow(),name,salary.orElseThrow(),special);
-        //Переделать с сервисом
         service.saveMaster(master);
         return "redirect:/manufacture/master";
     }

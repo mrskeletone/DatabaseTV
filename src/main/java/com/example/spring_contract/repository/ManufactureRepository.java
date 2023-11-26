@@ -19,4 +19,6 @@ public interface ManufactureRepository extends JpaRepository<Manufacture,Integer
 
     @Query(nativeQuery = true, value = "select m.* from manufucture m join mydb.finishedproduct f on m.Id_Manufucture = f.Id_Manufucture where name_product like %:product%")
     List<Manufacture> findByProduct(@Param("product")String product);
+
+
 }

@@ -1,0 +1,36 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Product add</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link th:rel="stylesheet" th:href="@{assets/bootstrap-select-1.13.9/dist/css/bootstrap-select.css}"/>
+    <link th:rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+    <link th:rel="stylesheet" th:href="@{webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+
+</head>
+<body>
+<header th:insert="blocks/header :: header"></header>
+
+
+<div class="container mt-5">
+    <h1>Цех</h1>
+    <form  action="/manufacture/add"  method="post">
+        <input type="number" name="idMan" placeholder="Номер цеха" class="form-control"><br>
+        <select name="master" id="master" class="form-control selectpicker" th:valuetype="Master">
+            <option disabled>Выберите мастера</option>
+            <option th:each="el:${mas}" th:value="${el.id_master}"  th:text="${el.name}"></option>
+        </select><br>
+        <button type="submit" class="btn btn-success">Добавить цех</button>
+    </form>
+    <a href="/manufacture" class="btn btn-warning">Отмена</a>
+
+
+</div>
+
+<footer th:insert="blocks/footer :: footer"></footer>
+<!--<script th:src="@{/webjars/jquery/jquery.min.js}"></script>-->
+<!--<script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>-->
+<!--<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>-->
+<!--<script th:src="@{assets/bootstrap-select-1.13.9/dist/js/bootstrap-select.js}"></script>-->
+</body>
+</html>
