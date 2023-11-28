@@ -29,4 +29,6 @@ public interface SuppliersRepository extends JpaRepository<Suppliers, Integer> {
     @Query(nativeQuery = true,value = "select MAX(Id_suppliers) from suppliers;")
     int findMaxId();
 
+    @Override
+    void delete(Suppliers entity);
 }

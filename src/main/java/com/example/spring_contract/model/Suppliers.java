@@ -18,8 +18,9 @@ public class Suppliers {
     private int id;
     @Column(name = "Full_name")
     private String name;
-
-
+    @ManyToOne()
+    @JoinColumn(name = "id_organization")
+    private Organization organization;
     @OneToMany(mappedBy ="suppliers" )
     private List<Materials>materials;
 
@@ -39,7 +40,5 @@ public class Suppliers {
         this.organization = organization;
     }
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_organization")
-    private Organization organization;
+
 }
