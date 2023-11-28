@@ -59,16 +59,18 @@ public class FinishProductService {
         return repository.findByDate(begin, end);
     }
 
-    public void save(FinishedProduct product) {
+    public int save(FinishedProduct product) {
         int flag = repository.check(product.getId());
-        if (flag == 0 && product.getId()>0) {
+        if (flag == 0 && product.getId() > 0) {
             repository.save(product);
-        } else if (flag == 1 || product.getId()<0) {
+        } else if (flag == 1 || product.getId() < 0) {
             int idNew = repository.findMax() + 1;
             product.setId(idNew);
             repository.save(product);
-
+            return idNew;
         }
+        return product.getId();
+
     }
 
 

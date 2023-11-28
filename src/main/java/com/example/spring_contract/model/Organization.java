@@ -18,18 +18,22 @@ public class Organization {
     private int id;
     @Column(name = "name")
     private String name;
+    @Column(name = "address")
+    private String addres;
 
     @Override
     public String toString() {
         return "Organization{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", addres='" + addres + '\'' +
                 '}';
     }
 
-    public Organization(int id, String name) {
+    public Organization(int id, String name, String addres) {
         this.id = id;
         this.name = name;
+        this.addres = addres;
     }
 
     @OneToMany(mappedBy ="organization" )

@@ -43,4 +43,13 @@ public interface FinishProductRepository extends JpaRepository<FinishedProduct,I
     List<FinishedProduct> findAllBySup(@Param("id")int id);
     @Query(nativeQuery = true,value = "SELECT MAX(f.Date_Creation) FROM finishedproduct f WHERE f.Id_warehouse=:warehouse")
     LocalDate findMaxDate(@Param("warehouse")int warehouse);
+    @Query(nativeQuery = true,value = "SELECT f.* FROM finishedproduct f JOIN groupmaterials g ON f.Id_Fiinished_product = g.Id_Fiinished_product WHERE g.Id_Materials=:idMat")
+    List<FinishedProduct> findAllByMat(@Param("idMat")int idMat  );
+    @Query(nativeQuery = true,value = "SELECT distinct f.* FROM finishedproduct f\n" +
+            " JOIN groupmaterials g\n" +
+            " JOIN materials m\n" +
+            " JOIN suppliers s \n" +
+            " JOIN organization o ON s.id_organization = o.id_organization ON m.Id_suppliers = s.Id_suppliers ON g.Id_Materials = m.Id_Materials ON f.Id_Fiinished_product = g.Id_Fiinished_product\n" +
+            " WHERE o.id_organization=:idOrg")
+    List<FinishedProduct> findAllByOrg(@Param("idOrg") int idOrg);
 }

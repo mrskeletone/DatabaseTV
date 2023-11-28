@@ -18,8 +18,7 @@ public class Suppliers {
     private int id;
     @Column(name = "Full_name")
     private String name;
-    @Column(name = "address")
-    private String addres;
+
 
     @OneToMany(mappedBy ="suppliers" )
     private List<Materials>materials;
@@ -30,15 +29,13 @@ public class Suppliers {
         return "Suppliers{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", addres='" + addres + '\'' +
                 ", organization=" + organization +
                 '}';
     }
 
-    public Suppliers(int id, String name, String addres, Organization organization) {
+    public Suppliers(int id, String name,  Organization organization) {
         this.id = id;
         this.name = name;
-        this.addres = addres;
         this.organization = organization;
     }
 

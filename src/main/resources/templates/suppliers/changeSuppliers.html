@@ -1,0 +1,36 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>details suppliers </title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+</head>
+<body>
+<header th:insert="blocks/header :: header"></header>
+
+
+<div class="container mt-5">
+    <h1>Договор</h1>
+    <div th:each="el :${suppliers}" class="alert alert-info mt-2">
+        <form method="post">
+            <span class="h1">№</span>
+            <span class="h1" th:text="${el.id}"/>
+            <p></p>
+            <span class="h4">Имя поставщика:</span>
+            <input name="name" type="text" th:value="${el.name}" placeholder="Введите имя поставщика">
+            <p></p>
+            <span class="h4">Название организации:</span>
+            <select id="org" name="org" th:valuetype="Organization">
+                <option th:each="el1:${organization}" th:value="${el1.id}" th:text="${el1.name}"></option>
+            </select>
+            <p></p>
+            <button type="submit" class="btn btn-success">Изменить</button>
+        </form>
+        <a th:href="'/suppliers/'+${el.id}" class="btn btn-primary w-100 py-2">back </a>
+
+    </div>
+</div>
+<footer th:insert="blocks/footer :: footer"></footer>
+
+</body>
+</html>

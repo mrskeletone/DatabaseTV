@@ -45,7 +45,7 @@
 <!--            </div>-->
             <label for="materials"></label><select name="materials" id="materials" class="form-control selectpicker" multiple   >
                 <option disabled>select option</option>
-                <option th:each="el3:${materials}" th:value="${el3.id}" th:text="${el3.name}"></option>
+                <option th:each="el3:${materials}" th:value="${el3.id}" th:text="${el3.name}" ></option>
             </select>
             <button type="submit" class="btn btn-success"  >Изменить продукт</button>
 

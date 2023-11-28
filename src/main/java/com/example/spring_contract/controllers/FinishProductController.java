@@ -34,7 +34,7 @@ public class FinishProductController {
     @NonNull
     private GroupMaterialsRepository groupMaterialsRepository;
 
-    private final String main="redirect:/finishProduct";
+    private static final String main="redirect:/finishProduct";
 
 
     @GetMapping("/finishProduct")
@@ -108,8 +108,8 @@ public class FinishProductController {
             date=LocalDate.now();
         }
         FinishedProduct finishedProduct=new FinishedProduct(id.orElseThrow(),quantity.orElseThrow(),nameProduct,date,manufactureById,warehouseById);
-        service.save(finishedProduct);
-        FinishedProduct finishedProduct1=finishProductRepository.findById(id.orElseThrow()).orElseThrow();
+       int i= service.save(finishedProduct);
+        FinishedProduct finishedProduct1=finishProductRepository.findById(i).orElseThrow();
         insertGroupMat(materials, finishedProduct1);
         if(warehouseById.getLast_receipt_date()==null||warehouseById.getLast_receipt_date().isBefore(date)){
         warehouseById.setLast_receipt_date(date);

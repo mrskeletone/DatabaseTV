@@ -133,7 +133,7 @@ public class ContractController {
     }
     @PostMapping("/mainContract/{IDSell}/remove")
     public String removeProduct(Model model,@PathVariable int IDSell){
-        Sell sell=sellRepository.findById(IDSell).get();
+        Sell sell=sellRepository.findById(IDSell).orElseThrow();
         sellRepository.delete(sell);
         return "redirect:/mainContract";
     }

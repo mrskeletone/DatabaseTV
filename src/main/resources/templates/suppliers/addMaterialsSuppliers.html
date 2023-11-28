@@ -1,0 +1,34 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>details suppliers </title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+</head>
+<body>
+<header th:insert="blocks/header :: header"></header>
+
+
+<div class="container mt-5">
+    <h1>Материалы</h1>
+    <div th:each="el :${materials}" class="alert alert-info mt-2">
+        <span th:text="${el.name}" class="h4"/>
+        <span class="h4">-</span>
+        <!--            &nbsp-->
+        <span th:text="${el.price}+'p'" class="h4"/>
+        <span class="h4">-</span>
+        <span th:text="${el.quantity}+'шт'" class="h4"/>
+        <a th:href="'/suppliers/'+${id}+'/addMaterials/'+${el.id}+'/change'" class="btn btn-warning">Изменить материал</a>
+        <form th:action="'/suppliers/'+${id}+'/addMaterials/'+${el.id}+'/remove'" method="post">
+            <button class="btn btn-danger" type="submit">Удалить</button>
+        </form>
+    </div>
+    <a th:href="'/suppliers/'+${id}+'/addMaterials/add'" class="btn btn-warning  w-100 ">Добавить материал</a>
+    <p></p>
+    <a th:href="'/suppliers/'+${id}" class="btn btn-primary w-100 py-2">back </a>
+
+</div>
+<footer th:insert="blocks/footer :: footer"></footer>
+
+</body>
+</html>

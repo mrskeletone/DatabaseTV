@@ -18,8 +18,9 @@
     <h1>Поставщики</h1>
 
     <form th:action="@{/suppliers}" method="get">
-        <input type="text" name="id" th:value="${id}"  placeholder="Поиск по id или названию организации" size="36" >
-        <input type="text" name="mat" th:value="${mat}"  placeholder="Поиск по материалу" size="20" >
+        <input type="text" name="id"   placeholder="Поиск по id или имение поставщика" size="36" >
+        <input type="text" name="org"  placeholder="Поиск по названию организации или адресу" size="42">
+        <input type="text" name="mat"   placeholder="Поиск по материалу" size="20" >
 
 
         <button type="submit" class="btn btn-info"  >Search</button>
@@ -32,14 +33,17 @@
         <span class="h4">Имя поставщика:</span>
         <span  th:text="${el.name}" class="h4"/>
         <p></p>
-        <span class="h4">адрес:</span>
-        <span  th:text="${el.addres}" class="h4"/>
-        <p></p>
+
         <span class="h4">Название организации:</span>
         <span  th:text="${el.organization.name}" class="h4"/>
         <p></p>
+        <span class="h4">адрес:</span>
+        <span  th:text="${el.organization.addres}" class="h4"/>
+        <p></p>
         <a th:href="'/suppliers/'+ ${el.id}" class="btn btn-warning">Детальнее</a>
     </div>
+    <a href="/suppliers/add" class="btn btn-warning">Добавить поставщика</a>
+    <a href="/suppliers/organization" class="btn btn-warning">Организации</a>
 </div>
 <footer th:insert="blocks/footer :: footer"></footer>
 
