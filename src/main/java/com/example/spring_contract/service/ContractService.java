@@ -1,15 +1,22 @@
 package com.example.spring_contract.service;
 
+import com.example.spring_contract.model.Client;
+import com.example.spring_contract.model.FinishedProduct;
+import com.example.spring_contract.model.Manager;
 import com.example.spring_contract.model.Sell;
 import com.example.spring_contract.repository.SellRepository;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class ContractService {
-    @Autowired
+    @NonNull
     private SellRepository repository;
     public List<Sell> getAll(){
         return  repository.findAll();
@@ -38,4 +45,9 @@ public class ContractService {
     public List<Sell> getById(int id){
         return repository.findByIds(id);
     }
+
+//    public void save(Client client , Manager manager, FinishedProduct product, Optional<Integer> price,Optional<Integer> quantity){
+//        int id= repository.findMaxId();
+//
+//    }
 }

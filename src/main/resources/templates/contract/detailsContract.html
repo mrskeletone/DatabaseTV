@@ -15,6 +15,9 @@
         <span class="h1">№</span>
         <span class="h1" th:text="${el.IDSell}"/>
         <p></p>
+        <span class="h4">Дата:</span>
+        <span class="h4" th:text="${el.dateSell}"/>
+        <p></p>
         <span class="h4">Клиент:</span>
         <span  th:text="${el.client.getName()}" class="h4"/>
         <p></p>
@@ -28,10 +31,10 @@
         <span th:text="${el.price}" class="h4"/>
         <span class="h4">&nbsp&nbsp&nbsp&nbsp&nbspКоличество:</span>
         <span class="h4" th:text="${el.quantity}"/>
-
-
+        <p></p>
+        <a th:href="'/mainContract/'+${el.IDSell}+'/change'" class="btn btn-warning">Изменить</a>
         <form th:action="'/mainContract/'+${el.IDSell}+'/remove'" method="post">
-            <button class="btn btn-warning" type="submit">Удалить</button>
+            <button class="btn btn-danger" type="submit">Удалить</button>
         </form>
     </div>
 </div>

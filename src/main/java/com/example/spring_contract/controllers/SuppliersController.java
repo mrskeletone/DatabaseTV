@@ -146,7 +146,7 @@ public class SuppliersController {
         if(price.isPresent() && price.orElseThrow()>=0){
             pr= price.orElseThrow();
         }else {
-            pr=0;
+            pr=1;
         }
         int q;
         if(quantity.isPresent()&&quantity.orElseThrow()>0){
@@ -168,7 +168,19 @@ public class SuppliersController {
     public String postAddMaterials(Model model,@PathVariable int id,@RequestParam String name,
                                    @RequestParam Optional<Integer> price,@RequestParam Optional<Integer> quantity){
         int idMat=materialsRepository.findMaxId()+1;
-        Materials material=new Materials(idMat,name,quantity.orElseThrow(), price.orElseThrow(),suppliersRepository.findById(id).orElseThrow());
+        int p;
+        int q;
+        if(price.isPresent()&&price.orElseThrow()<=0){
+            p=1;
+        }else {
+            p=price.orElseThrow();
+        }
+        if(quantity.orElseThrow()<=0){
+            q=1;
+        }else {
+            q=quantity.orElseThrow();
+        }
+        Materials material=new Materials(idMat,name,q, p,suppliersRepository.findById(id).orElseThrow());
         materialsRepository.save(material);
         return "redirect:/suppliers/{id}/addMaterials";
     }

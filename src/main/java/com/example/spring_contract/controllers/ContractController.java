@@ -1,6 +1,12 @@
 package com.example.spring_contract.controllers;
 
+import com.example.spring_contract.model.Client;
+import com.example.spring_contract.model.FinishedProduct;
+import com.example.spring_contract.model.Manager;
 import com.example.spring_contract.model.Sell;
+import com.example.spring_contract.repository.ClientRepository;
+import com.example.spring_contract.repository.FinishProductRepository;
+import com.example.spring_contract.repository.ManagerRepository;
 import com.example.spring_contract.repository.SellRepository;
 import com.example.spring_contract.service.ContractService;
 import lombok.NonNull;
@@ -11,7 +17,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -22,11 +30,17 @@ import java.util.Optional;
 public class ContractController {
     @NonNull
     private SellRepository sellRepository;
-    @Autowired
+    @NonNull
     private ContractService service;
+    @NonNull
+    private ClientRepository clientRepository;
+    @NonNull
+    private ManagerRepository managerRepository;
+    @NonNull
+    private FinishProductRepository finishProductRepository;
 
     @GetMapping("/mainContract")
-    public String blog(Model model, Optional<Integer> id, String product, String cl,
+    public String contract(Model model, Optional<Integer> id, String product, String cl,
                        String man, Optional<Integer> begin, Optional<Integer> end) {
         List<Sell> list = new ArrayList<>();
         if (!Objects.equals(product, "") && !Objects.equals(cl, "") && !Objects.equals(man, "")
@@ -105,7 +119,7 @@ public class ContractController {
         }
 
         model.addAttribute("sell", list);
-        return "mainContract";
+        return "contract/mainContract";
     }
     //Сравнивает листы и убирает все ненужные
     private void checkPriceOnList(List<Sell> list, List<Sell> priceList) {
@@ -126,16 +140,39 @@ public class ContractController {
         }
     }
 
-    @GetMapping("/mainContract/{IDSell}")
-    public String detail(Model model, @PathVariable int IDSell) {
-        if (checkExist(model, IDSell)) return "redirect:/mainContract";
-        return "detailsContract";
+    @GetMapping("/mainContract/{id}")
+    public String detail(Model model, @PathVariable int id) {
+        if (checkExist(model, id)) return "redirect:/mainContract";
+        return "contract/detailsContract";
     }
-    @PostMapping("/mainContract/{IDSell}/remove")
-    public String removeProduct(Model model,@PathVariable int IDSell){
-        Sell sell=sellRepository.findById(IDSell).orElseThrow();
+    @PostMapping("/mainContract/{id}/remove")
+    public String removeProduct(Model model,@PathVariable int id){
+        Sell sell=sellRepository.findById(id).orElseThrow();
         sellRepository.delete(sell);
         return "redirect:/mainContract";
+    }
+    @GetMapping("/mainContract/{id}/change")
+    public String changeContract(Model model,@PathVariable int id){
+        model.addAttribute("contract",sellRepository.findById(id).orElseThrow());
+        model.addAttribute("client",clientRepository.findAll());
+        model.addAttribute("manager",managerRepository.findAll());
+        model.addAttribute("product",finishProductRepository.findAll());
+
+        return "contract/changeContract";
+    }
+    @PostMapping("/mainContract/{id}/change")
+    public String postChangeContract(Model model, @PathVariable int id, @RequestParam Client clients, @RequestParam Manager managers,
+                                     @RequestParam FinishedProduct products, @RequestParam Optional<Integer> price, @RequestParam Optional<Integer> quantity,
+                                     @RequestParam LocalDate date){
+        Sell sell=sellRepository.findById(id).orElseThrow();
+        sell.setDateSell(date);
+        sell.setPrice(price.orElseThrow());
+        sell.setClient(clients);
+        sell.setQuantity(quantity.orElseThrow());
+        sell.setManager(managers);
+        sell.setFinishedProduct(products);
+        sellRepository.save(sell);
+        return "redirect:/mainContract/{id}";
     }
 
 

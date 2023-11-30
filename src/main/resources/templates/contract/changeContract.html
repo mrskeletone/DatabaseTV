@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+</head>
+<body>
+<header th:insert="blocks/header :: header"></header>
+
+
+<div class="container mt-5">
+    <form method="post">
+        <h1>Договор</h1>
+        <span class="h1">№</span>
+        <span class="h1" th:text="${contract.IDSell}"/>
+        <p></p>
+        <span class="h4">Дата:</span>
+        <input type="date"  th:value="${contract.dateSell}" name="date">
+        <p></p>
+        <span class="h4">Клиент:</span>
+        <select name="clients" id="clients" th:valuetype="Client">
+            <option th:each="el:${client}" th:value="${el.id_client}" th:text="${el.name}"/>
+        </select>
+        <p></p>
+        <span class="h4">Менеджер:</span>
+        <select name="managers" id="managers" th:valuetype="Manager">
+            <option th:each="el:${manager}" th:value="${el.id}" th:text="${el.name}"/>
+        </select>
+        <p></p>
+        <span class="h4">Продукт:</span>
+        <select name="products" id="products" th:valuetype="FinishedProduct">
+            <option th:each="el:${product}" th:value="${el.id}" th:text="${el.nameProduct}"/>
+        </select>
+        <p></p>
+        <span class="h4">Стоимость:</span>
+        <input type="number" th:value="${contract.price}" placeholder="Введите цену" aria-valuemin="0" name="price">
+        <span class="h4">&nbsp&nbsp&nbsp&nbsp&nbspКоличество:</span>
+        <input type="number" th:value="${contract.quantity}" name="quantity" aria-valuemin="0"
+               placeholder="Введите количество">
+        <p></p>
+        <button type="submit" class="btn btn-success">Изменить</button>
+    </form>
+</div>
+<a th:href="'/mainContract/'+${contract.IDSell}" class="btn btn-primary w-100 py-2">back </a>
+<footer th:insert="blocks/footer :: footer"></footer>
+
+</body>
+</html>
