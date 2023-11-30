@@ -4,12 +4,14 @@ import com.example.spring_contract.model.Client;
 import com.example.spring_contract.model.FinishedProduct;
 import com.example.spring_contract.model.Manager;
 import com.example.spring_contract.model.Sell;
+import com.example.spring_contract.repository.ClientRepository;
 import com.example.spring_contract.repository.SellRepository;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,6 +20,7 @@ import java.util.Optional;
 public class ContractService {
     @NonNull
     private SellRepository repository;
+
     public List<Sell> getAll(){
         return  repository.findAll();
     }
@@ -46,8 +49,22 @@ public class ContractService {
         return repository.findByIds(id);
     }
 
-//    public void save(Client client , Manager manager, FinishedProduct product, Optional<Integer> price,Optional<Integer> quantity){
-//        int id= repository.findMaxId();
-//
-//    }
+    public void save(Client client , Manager manager, FinishedProduct product, Optional<Integer> price
+            , Optional<Integer> quantity, LocalDate date){
+        int id= repository.findMaxId()+1;
+        int p=1;
+        if(price.orElseThrow()>0){
+            p=price.orElseThrow();
+        }
+        int q=1;
+        if(quantity.orElseThrow()>0){
+            q=quantity.orElseThrow();
+        }
+        if(date.isAfter(LocalDate.now())){
+            date=LocalDate.now();
+        }
+        Sell sell=new Sell(id,date,p,q,client,manager,product);
+        repository.save(sell);
+    }
+
 }

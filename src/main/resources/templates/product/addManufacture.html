@@ -14,11 +14,11 @@
 
 <div class="container mt-5">
     <h1>Цех</h1>
-    <form  action="/manufacture/add"  method="post">
+    <form action="/manufacture/add" method="post">
         <input type="number" name="idMan" placeholder="Номер цеха" class="form-control"><br>
         <select name="master" id="master" class="form-control selectpicker" th:valuetype="Master">
             <option disabled>Выберите мастера</option>
-            <option th:each="el:${mas}" th:value="${el.id_master}"  th:text="${el.name}"></option>
+            <option th:each="el:${mas}" th:value="${el.id_master}" th:text="${el.name}"></option>
         </select><br>
         <button type="submit" class="btn btn-success">Добавить цех</button>
     </form>
