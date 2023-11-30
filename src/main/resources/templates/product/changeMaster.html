@@ -20,36 +20,25 @@
 
 
 <div class="container mt-5">
-    <h1>Мастера</h1>
-        <form th:action="@{/manufacture/master}" method="get">
-            <input type="text" name="id" th:value="${id}"  placeholder="Поиск по № ,специализации или имени мастера цеха" size="50" >
-            <input type="number" name="begin" th:value="${begin}" placeholder="Зарплата от">
-            <input type="number" name="end" th:value="${end}" placeholder="Зарплата до">
-            <button type="submit" class="btn btn-info"  >Search</button>
-            <button type="submit" class="btn btn-info" >Reset</button>
-        </form>
-    <div th:each="el :${mas}" class="alert alert-info mt-2">
+    <h1>Мастер</h1>
+    <form method="post">
         <span class="h1">№</span>
-        <span class="h1" th:text="${el.id_master}" th:name="id"/>
+        <span class="h1" th:text="${master.id_master}" th:name="id"/>
         <p></p>
         <span class="h4">Имя Мастера :</span>
-        <span th:text="${el.name}" class="h4"/>
+        <input name="name" type="text" th:value="${master.name}" placeholder="Введите имя мастера">
         <p></p>
         <span class="h4">Зарплата мастера:</span>
-        <span class="h4" th:text="${el.salary}"/>
+        <input type="number" name="salary" th:value="${master.salary}" placeholder="Введите зарплату мастера">
         <p></p>
         <span class="h4">Специализация мастера:</span>
-        <span class="h4" th:text="${el.specializations}"/>
-        <p/>
-        <a th:href="'/manufacture/master/'+${el.id_master}+'/change'" class="btn btn-warning">Изменить</a>
-        <form th:action="'/manufacture/master/'+${el.id_master}+'/remove'" method="post">
-            <button class="btn btn-warning" type="submit">Удалить</button>
-        </form>
-        <!--        <a th:href="'/finishProduct/'+ ${el.id}" class="btn btn-warning">Детальнее</a>-->
-    </div>
-    <a th:href="'/manufacture/master/add'" class="btn btn-warning">Добавить нового мастера</a>
+        <input type="text" name="spec" th:value="${master.specializations}" placeholder="Введите специализацию">
+        <p></p>
+        <button type="submit" class="btn btn-success">Изменить</button>
+    </form>
+    <!--        <a th:href="'/finishProduct/'+ ${el.id}" class="btn btn-warning">Детальнее</a>-->
 </div>
-<a href="/manufacture" class="btn btn-primary w-100 py-2">Назад</a>
+<a href="/manufacture/master" class="btn btn-primary w-100 py-2">Назад</a>
 
 <footer th:insert="blocks/footer :: footer"></footer>
 

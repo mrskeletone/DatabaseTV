@@ -34,6 +34,7 @@
             <span class="h4" th:text="${el1.nameProduct}"></span>
             <p/>
         </div>
+        <a th:href="'/manufacture/'+${el.id_Manufucture}+'/change'" class="btn btn-warning">Изменить</a>
         <form th:action="'/manufacture/'+${el.id_Manufucture}+'/remove'" method="post">
             <button class="btn btn-warning" type="submit">Удалить</button>
         </form>

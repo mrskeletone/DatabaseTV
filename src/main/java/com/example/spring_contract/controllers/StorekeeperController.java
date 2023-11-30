@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.*;
 
@@ -23,7 +24,7 @@ public class StorekeeperController {
 
     @GetMapping("/storekeeper")
     public String storekeeper(Model model, String id, Optional<Integer> begin, Optional<Integer> end) {
-        List<Storekeeper> list = new ArrayList<>();
+        List<Storekeeper> list;
         if (!Objects.equals(id, "") && id!=null) {
             list = service.findByIdOrName(id);
         } else {
@@ -45,6 +46,19 @@ public class StorekeeperController {
     @PostMapping("/storekeeper/{id}/remove")
     public String storekeeperRemove(Model model, @PathVariable int id) {
         repository.delete(repository.findById(id).orElseThrow());
+        return "redirect:/storekeeper";
+    }
+    @GetMapping("/storekeeper/{id}/change")
+    public String storekeeperChange(Model model, @PathVariable int id) {
+        model.addAttribute("storekeeper",repository.findById(id).orElseThrow());
+        return "ChangeStorekeeper";
+    }
+    @PostMapping("/storekeeper/{id}/change")
+    public String postStorekeeperChange(Model model, @PathVariable int id, @RequestParam String name,@RequestParam Optional<Integer> salary) {
+        Storekeeper storekeeper=repository.findById(id).orElseThrow();
+        storekeeper.setName(name);
+        storekeeper.setSalary(salary.orElseThrow());
+        repository.save(storekeeper);
         return "redirect:/storekeeper";
     }
 

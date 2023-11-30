@@ -19,36 +19,23 @@
 <header th:insert="blocks/header :: header"></header>
 <div class="container mt-5">
     <h1>Клиенты</h1>
-    <form th:action="@{/mainContract/client}" method="get">
-        <input type="text" name="id" placeholder="Поиск по номеру клиента или ФИО " size="35">
-        <input type="text" name="org" placeholder="Поиск по организации " size="20">
-        <input type="text" name="address" placeholder="Поиск по адресу" size="20">
-
-
-        <button type="submit" class="btn btn-info">Search</button>
-        <button type="submit" class="btn btn-info">Reset</button>
-    </form>
-    <div th:each="el :${client}" class="alert alert-info mt-2">
+    <form method="post">
         <span class="h1">№</span>
-        <span class="h1" th:text="${el.id_client}"/>
+        <span class="h1" th:text="${client.id_client}"/>
         <p></p>
         <span class="h4">Имя клиента:</span>
-        <span th:text="${el.name}" class="h4"/>
+        <input type="text" name="name" th:value="${client.name}" placeholder="Введите имя клиента">
         <p></p>
         <span class="h4">Организация:</span>
-        <span th:text="${el.organization}" class="h4"/>
+        <input type="text" name="org" th:value="${client.organization}" placeholder="Введите организацию">
         <p></p>
         <span class="h4">Адресс:</span>
-        <span th:text="${el.addres}" class="h4"/>
+        <input type="text" name="address" th:value="${client.addres}" placeholder="Введите адрес">
         <p></p>
-        <a th:href="'/mainContract/client/'+${el.id_client}+'/change'" class="btn btn-warning">Изменить</a>
-        <form method="post" th:action="'/mainContract/client/'+ ${el.id_client}+'/remove'">
-            <button type="submit" class="btn btn-warning">удалить</button>
-        </form>
-    </div>
-    <a th:href="'/mainContract/client/add'" class="btn btn-warning">Добавить клиента</a>
+        <button type="submit" class="btn btn-success">Изменить</button>
+    </form>
 </div>
-<a th:href="'/mainContract'" class="btn btn-primary py-2 w-100">назад</a>
+<a th:href="'/mainContract/client'" class="btn btn-primary py-2 w-100">назад</a>
 <footer th:insert="blocks/footer :: footer"></footer>
 </body>
 

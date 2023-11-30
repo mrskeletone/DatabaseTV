@@ -34,6 +34,7 @@
         <span class="h4">Зарплата работника склада:</span>
         <span th:text="${el.salary}" class="h4"/>
         <p></p>
+        <a th:href="'/storekeeper/'+${el.id}+'/change'" class="btn btn-warning">Изменить</a>
         <form th:action="'/storekeeper/'+${el.id}+'/remove'" method="post">
             <button class="btn btn-warning" type="submit">Удалить</button>
         </form>

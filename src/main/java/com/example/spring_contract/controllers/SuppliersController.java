@@ -211,6 +211,19 @@ public class SuppliersController {
         organizationRepository.delete(organization);
         return "redirect:/suppliers/organization";
     }
+    @GetMapping("/suppliers/organization/{id}/change")
+    public String changeOrganization(Model model,@PathVariable int id){
+        model.addAttribute("orgs",organizationRepository.findById(id).orElseThrow());
+        return "suppliers/ChangeOrganization";
+    }
+    @PostMapping("/suppliers/organization/{id}/change")
+    public String postChangeOrganization(Model model,@PathVariable int id,@RequestParam String name,@RequestParam String address){
+        Organization organization=organizationRepository.findById(id).orElseThrow();
+        organization.setName(name);
+        organization.setAddres(address);
+        organizationRepository.save(organization);
+        return "redirect:/suppliers/organization";
+    }
     @GetMapping("/suppliers/organization/add")
     public String addOrganization(Model model){
         return "suppliers/addOrganization";

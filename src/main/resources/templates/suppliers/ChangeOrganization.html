@@ -22,35 +22,20 @@
 <div class="container mt-5">
     <h1>Организации</h1>
 
-    <form th:action="@{/suppliers/organization}" method="get">
-        <input type="text" name="org" placeholder="Поиск по id, названию организации или адресу" size="42">
-        <input type="text" name="sup" placeholder="Имение менеджера" size="36">
-        <button type="submit" class="btn btn-info">Search</button>
-        <button type="submit" class="btn btn-info">Reset</button>
-    </form>
-    <div th:each="el :${orgs}" class="alert alert-info mt-2">
+    <form method="post">
         <span class="h1">№</span>
-        <span class="h1" th:text="${el.id}"/>
+        <span class="h1" th:text="${orgs.id}"/>
         <p></p>
         <span class="h4">Название организации:</span>
-        <span th:text="${el.name}" class="h4"/>
+        <input type="text" name="name" th:value="${orgs.name}" placeholder="Введите название организации">
         <p></p>
         <span class="h4">адрес:</span>
-        <span th:text="${el.addres}" class="h4"/>
+        <input type="text" name="address" th:value="${orgs.addres}" placeholder="Введите адрес">
         <p></p>
-        <p class="h4">Менеджеры:</p>
-        <div th:each="el1:${el.suppliers}">
-            <span class="h4" th:text="${el1.name}"/>
-            <p></p>
-        </div>
-        <a th:href="'/suppliers/organization/'+${el.id}+'/change'" class="btn btn-warning">Изменить</a>
-        <form method="post" th:action="'/suppliers/organization/'+ ${el.id}+'/remove'">
-            <button class="btn btn-warning">удалить</button>
-        </form>
-    </div>
-    <a href="/suppliers/organization/add" class="btn btn-warning">Добавить организацию</a>
+        <button type="submit" class="btn btn-success">изменить</button>
+    </form>
 </div>
-<a href="/suppliers" class="btn btn-primary w-100 py-2">Назад</a>
+<a href="/suppliers/organization" class="btn btn-primary w-100 py-2">Назад</a>
 <footer th:insert="blocks/footer :: footer"></footer>
 
 </body>

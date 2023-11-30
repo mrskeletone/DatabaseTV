@@ -186,8 +186,8 @@ public class ContractController {
             sell.setQuantity(quantity.orElseThrow());
         }
         if (managerNew != managerOld) {
-            managerOld.setEarned(managerOld.getEarned()-price.orElseThrow());
-            managerNew.setEarned(managerNew.getEarned()+price.orElseThrow());
+            managerOld.setEarned(managerOld.getEarned() - price.orElseThrow());
+            managerNew.setEarned(managerNew.getEarned() + price.orElseThrow());
             sell.setManager(managers);
         }
         sell.setFinishedProduct(products);
@@ -237,6 +237,23 @@ public class ContractController {
         return "redirect:/mainContract/client";
     }
 
+    @GetMapping("/mainContract/client/{id}/change")
+    public String changeClient(Model model, @PathVariable int id) {
+        Client client = clientRepository.findById(id).orElseThrow();
+        model.addAttribute("client", client);
+        return "contract/changeClient";
+    }
+
+    @PostMapping("/mainContract/client/{id}/change")
+    public String postChangeClient(Model model, @PathVariable int id, @RequestParam String name, @RequestParam String org, @RequestParam String address) {
+        Client client = clientRepository.findById(id).orElseThrow();
+        client.setName(name);
+        client.setOrganization(org);
+        client.setAddres(address);
+        clientRepository.save(client);
+        return "redirect:/mainContract/client";
+    }
+
     @GetMapping("/mainContract/client/add")
     public String addClient(Model model) {
 
@@ -263,6 +280,23 @@ public class ContractController {
     public String removeManager(Model model, @PathVariable int id) {
         Manager manager = managerRepository.findById(id).orElseThrow();
         managerRepository.delete(manager);
+        return "redirect:/mainContract/manager";
+    }
+
+    @GetMapping("/mainContract/manager/{id}/change")
+    public String changeManager(Model model, @PathVariable int id) {
+        Manager manager = managerRepository.findById(id).orElseThrow();
+        model.addAttribute("managers", manager);
+        return "contract/changeManager";
+    }
+
+    @PostMapping("/mainContract/manager/{id}/change")
+    public String postChangeManager(Model model, @PathVariable int id, @RequestParam String name, @RequestParam Optional<Integer> salary) {
+        Manager manager = managerRepository.findById(id).orElseThrow();
+        manager.setName(name);
+        if (salary.orElseThrow() > 0)
+            manager.setSalary(salary.orElseThrow());
+        managerRepository.save(manager);
         return "redirect:/mainContract/manager";
     }
 
