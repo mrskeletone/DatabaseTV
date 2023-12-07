@@ -28,4 +28,6 @@ public interface ManagerRepository extends JpaRepository<Manager,Integer> {
     List<Manager> findManagerBySalaryEnd(@Param("end") int end);
     @Query(nativeQuery = true,value = "select * from manager where manager.earned<=:end")
     List<Manager> findManagerByEarnedEnd(@Param("end") int end);
+    @Query(nativeQuery = true,value = "CALL Top_Manager()")
+    int findTopManager();
 }

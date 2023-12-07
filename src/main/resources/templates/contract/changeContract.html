@@ -25,6 +25,7 @@
         <p></p>
         <span class="h4">Менеджер:</span>
         <select name="managers" id="managers" th:valuetype="Manager">
+<!--            <option th:value="${contract.manager.id}" th:text="${contract.manager.name}" selected="selected"/>-->
             <option th:each="el:${manager}" th:value="${el.id}" th:text="${el.name}"/>
         </select>
         <p></p>

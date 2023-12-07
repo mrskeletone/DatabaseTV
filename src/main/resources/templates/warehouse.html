@@ -21,8 +21,8 @@
         <input type="text" name="name" th:value="${name}"  placeholder="Поиск по имени кладовщика" size="30" >
         <input type="text" name="product" th:value="${product}"  placeholder="Поиск по названию продукта" size="30" >
 
-        <button type="submit" class="btn btn-info"  >Search</button>
-        <button type="submit" class="btn btn-info" >Reset</button>
+        <button type="submit" class="btn btn-info"  >Поиск</button>
+        <button type="submit" class="btn btn-info" >Сброс</button>
     </form>
     <div th:each="el :${warehouse}" class="alert alert-info mt-2" >
         <span class="h1">№</span>

@@ -27,9 +27,27 @@
         <input type="number" name="beginEarned" placeholder="Заработано до " size="20">
 
 
-        <button type="submit" class="btn btn-info">Search</button>
-        <button type="submit" class="btn btn-info">Reset</button>
+        <button type="submit" class="btn btn-info">Поиск</button>
+        <button type="submit" class="btn btn-info">Сброс</button>
     </form>
+    <div class="alert alert-primary mt-2">
+        <span class="h1">№</span>
+        <span class="h1" th:text="${top.id}"/>
+        <p></p>
+        <span class="h4">Имя TOP менеджера:</span>
+        <span th:text="${top.name}" class="h4"/>
+        <p></p>
+        <span class="h4">Зарплата:</span>
+        <span th:text="${top.salary}" class="h4"/>
+        <p></p>
+        <span class="h4">Заработано:</span>
+        <span th:text="${top.earned}" class="h4"/>
+        <p></p>
+        <a th:href="'/mainContract/manager/'+${top.id}+'/change'" class="btn btn-warning">Изменить</a>
+        <form method="post" th:action="'/mainContract/manager/'+ ${top.id}+'/remo   ve'">
+            <button type="submit" class="btn btn-warning">удалить</button>
+        </form>
+    </div>
     <div th:each="el :${manager}" class="alert alert-info mt-2">
         <span class="h1">№</span>
         <span class="h1" th:text="${el.id}"/>

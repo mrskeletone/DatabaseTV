@@ -52,4 +52,6 @@ public interface FinishProductRepository extends JpaRepository<FinishedProduct,I
             " JOIN organization o ON s.id_organization = o.id_organization ON m.Id_suppliers = s.Id_suppliers ON g.Id_Materials = m.Id_Materials ON f.Id_Fiinished_product = g.Id_Fiinished_product\n" +
             " WHERE o.id_organization=:idOrg")
     List<FinishedProduct> findAllByOrg(@Param("idOrg") int idOrg);
+@Query(nativeQuery = true,value = "SELECT TvPrice(f.Id_Fiinished_product) FROM finishedproduct f where Id_Fiinished_product=:id")
+    int findPrice(@Param("id")int id);
 }

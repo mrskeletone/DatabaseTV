@@ -122,6 +122,7 @@ public class FinishProductController {
         ArrayList<FinishedProduct> finishedProducts = new ArrayList<>();
         finishedProduct.ifPresent(finishedProducts::add);
         model.addAttribute("finishProduct", finishedProducts);
+        model.addAttribute("price",finishProductRepository.findPrice(id));
         return "product/detailsFinishProduct";
     }
     @PostMapping("/finishProduct/{id}/remove")

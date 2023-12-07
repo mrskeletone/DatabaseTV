@@ -25,8 +25,8 @@
             <input type="text" name="id" th:value="${id}"  placeholder="Поиск по № ,специализации или имени мастера цеха" size="50" >
             <input type="number" name="begin" th:value="${begin}" placeholder="Зарплата от">
             <input type="number" name="end" th:value="${end}" placeholder="Зарплата до">
-            <button type="submit" class="btn btn-info"  >Search</button>
-            <button type="submit" class="btn btn-info" >Reset</button>
+            <button type="submit" class="btn btn-info"  >Поиск</button>
+            <button type="submit" class="btn btn-info" >Сброс</button>
         </form>
     <div th:each="el :${mas}" class="alert alert-info mt-2">
         <span class="h1">№</span>

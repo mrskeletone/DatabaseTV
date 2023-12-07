@@ -149,6 +149,7 @@ public class ContractController {
     @GetMapping("/mainContract/{id}")
     public String detail(Model model, @PathVariable int id) {
         if (checkExist(model, id)) return "redirect:/mainContract";
+        model.addAttribute("profit",sellRepository.findProfit(id));
         return "contract/detailsContract";
     }
 
@@ -272,6 +273,10 @@ public class ContractController {
     public String manager(Model model, String id, Optional<Integer> beginSalary, Optional<Integer> endSalary,
                           Optional<Integer> beginEarned, Optional<Integer> endEarned) {
         List<Manager> list = managerService.find(id, beginSalary, endSalary, beginEarned, endEarned);
+        Manager manager=managerRepository.findById(managerRepository.findTopManager()).orElseThrow();
+        if(list.remove(manager)){
+            model.addAttribute("top",manager);
+        }
         model.addAttribute("manager", list);
         return "contract/manager";
     }

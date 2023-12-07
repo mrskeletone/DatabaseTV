@@ -15,7 +15,8 @@ public class ClientService {
     private ClientRepository repository;
 
     public void saveClient(String name, String org, String address) {
-        int id = repository.findMaxId() + 1;
+          int  id = repository.findMaxId() + 1;
+
         Client client = new Client(id, name, address, org);
         repository.save(client);
     }

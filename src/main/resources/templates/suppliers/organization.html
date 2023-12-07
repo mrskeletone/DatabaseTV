@@ -25,8 +25,8 @@
     <form th:action="@{/suppliers/organization}" method="get">
         <input type="text" name="org" placeholder="Поиск по id, названию организации или адресу" size="42">
         <input type="text" name="sup" placeholder="Имение менеджера" size="36">
-        <button type="submit" class="btn btn-info">Search</button>
-        <button type="submit" class="btn btn-info">Reset</button>
+        <button type="submit" class="btn btn-info">Поиск</button>
+        <button type="submit" class="btn btn-info">Сброс</button>
     </form>
     <div th:each="el :${orgs}" class="alert alert-info mt-2">
         <span class="h1">№</span>

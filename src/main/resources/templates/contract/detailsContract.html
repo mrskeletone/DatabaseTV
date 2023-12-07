@@ -32,6 +32,9 @@
         <span class="h4">&nbsp&nbsp&nbsp&nbsp&nbspКоличество:</span>
         <span class="h4" th:text="${el.quantity}"/>
         <p></p>
+        <span class="h4">Профит:</span>
+        <span  th:text="${profit}" class="h4"/>
+        <p></p>
         <a th:href="'/mainContract/'+${el.IDSell}+'/change'" class="btn btn-warning">Изменить</a>
         <form th:action="'/mainContract/'+${el.IDSell}+'/remove'" method="post">
             <button class="btn btn-danger" type="submit">Удалить</button>

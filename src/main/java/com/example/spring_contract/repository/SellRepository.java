@@ -1,11 +1,16 @@
 package com.example.spring_contract.repository;
 
+import com.example.spring_contract.model.Client;
+import com.example.spring_contract.model.FinishedProduct;
+import com.example.spring_contract.model.Manager;
 import com.example.spring_contract.model.Sell;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -34,4 +39,11 @@ public interface SellRepository extends JpaRepository<Sell, Integer> {
     List<Sell> findByProduct(@Param("product") String product);
 @Query(nativeQuery = true,value = "select MAX(s.IDSell) from sell s;")
     int findMaxId();
+@Procedure("Add_Sell")
+    void saveProc( int id, LocalDate date,
+                  int product, String manager,
+                  String client,int price,
+                   int quantity);
+@Query(nativeQuery = true,value = "CALL Sell_Profit(:id)")
+int findProfit(int id);
 }

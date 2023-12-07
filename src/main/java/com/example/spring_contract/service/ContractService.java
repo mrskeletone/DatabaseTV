@@ -63,8 +63,9 @@ public class ContractService {
         if(date.isAfter(LocalDate.now())){
             date=LocalDate.now();
         }
-        Sell sell=new Sell(id,date,p,q,client,manager,product);
-        repository.save(sell);
+//        Sell sell=new Sell(id,date,p,q,client,manager,product);
+//        repository.save(sell);
+        repository.saveProc(id,date,product.getId(),manager.getName(),client.getName(),p,q);
     }
 
 }
